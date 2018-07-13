@@ -1,0 +1,36 @@
+{
+  "name": "stock-price",
+  "version": "0.0.1",
+  "description": "Stock price API",
+  "main": "server.js",
+  "dependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^4.0.0",
+    "ejs": "^2.4.1",
+    "express": "^4.13.4",
+    "jsdom": "^11.11.0",
+    "mocha": "^5.2.0",
+    "mongodb": "^2.1.16",
+    "morgan": "^1.7.0",
+    "object-assign": "4.1.0",
+    "sync-request": "^6.0.0"
+  },
+  "engine": {
+    "node": "*",
+    "npm": "*"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "IP=0.0.0.0 PORT=3030 mocha --timeout 5000 tests/*_test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/thanayut-p/stock-api.git"
+  },
+  "author": "Thanayut Panipakmontri <iamyutt@hotmail.com>",
+  "license": "CC-BY-1.0",
+  "bugs": {
+    "url": "http://github.com/thanayut-p/stock-api/issues"
+  },
+  "homepage": "http://github.com/thanayut-p/stock-api"
+}
