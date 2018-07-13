@@ -167,8 +167,10 @@ app.get('/price', function (req, res) {
 function getQuotesPrice(quotes) {
   var stocks = String(quotes).toUpperCase().split(',');
   var prices = [];
+  var data;
   stocks.forEach(function(stock) {
-      prices.push({s:stock, p: getStockPrice(stock)});
+      data = getStockPrice(stock);
+      prices.push({s:stock, p:data.p, c:data.c});
   });
   return prices;
 }
@@ -179,7 +181,7 @@ const { JSDOM } = jsdom;
 
 function getStockPrice(stock) {
   try {
-      var price;
+      var price, change;
       var res = request('GET', sourceURL+stock);
       var dom = new JSDOM(res.body.toString('utf-8'));
 
@@ -188,11 +190,14 @@ function getStockPrice(stock) {
       if(price == '-'){
           // Return latest close price if latest price is not available
           price = String(dom.window.document.getElementsByTagName('td')[1].innerHTML).trim();
+          return {"p":Number(price), "c":0};
+      } else {
+        change = String(dom.window.document.getElementsByTagName('h1')[3].innerHTML).trim();
+        return {"p":Number(price), "c":Number(change.substr(0, change.length-1))};
       }
-      return Number(price);
   } catch (ex) {
       console.log(ex);
-      return -1;
+      return {"p":-1, "c":-1};
   }
 }
 
