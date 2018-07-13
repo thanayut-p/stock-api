@@ -112,7 +112,7 @@ function getQuotesPrice(quotes) {
   var data;
   stocks.forEach(function(stock) {
       data = getStockPrice(stock);
-      prices.push({s:stock, p:data.p, c:data.c});
+      prices.push({s:stock, p:data.p, c:data.c, cp:data.cp});
   });
   return prices;
 }
@@ -123,7 +123,7 @@ const { JSDOM } = jsdom;
 
 function getStockPrice(stock) {
   try {
-      var price, change;
+      var price, change, percentChange;
       var res = request('GET', sourceURL+stock);
       var dom = new JSDOM(res.body.toString('utf-8'));
 
@@ -132,14 +132,17 @@ function getStockPrice(stock) {
       if(price == '-'){
           // Return latest close price if latest price is not available
           price = String(dom.window.document.getElementsByTagName('td')[1].innerHTML).trim();
-          return {"p":Number(price), "c":0};
+          return {"p":Number(price), "c":-1, "cp":-1};
       } else {
-        change = String(dom.window.document.getElementsByTagName('h1')[3].innerHTML).trim();
-        return {"p":Number(price), "c":Number(change.substr(0, change.length-1))};
+        change = String(dom.window.document.getElementsByTagName('h1')[2].textContent).trim();
+        percentChange = String(dom.window.document.getElementsByTagName('h1')[3].innerHTML).trim();
+        return {"p":Number(price), 
+                "c":Number(change), 
+                "cp":Number(percentChange.substr(0, percentChange.length-1))};
       }
   } catch (ex) {
       console.log(ex);
-      return {"p":-1, "c":-1};
+      return {"p":-1, "c":-1, "cp":-1};
   }
 }
 
