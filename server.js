@@ -58,9 +58,12 @@ function getStockPrice(stock) {
 */
 
 //  OpenShift sample Node application
-var express = require('express'),
-    app     = express(),
-    morgan  = require('morgan');
+var express = require('express');
+var app = express();
+var morgan = require('morgan');
+const url = require('url');
+const request = require('sync-request');
+const jsdom = require("jsdom");
     
 Object.assign=require('object-assign')
 
